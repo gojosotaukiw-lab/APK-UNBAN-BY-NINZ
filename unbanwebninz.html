@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>MT UNBAN PANEL</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#000000,#12002a,#1a003d);
+color:white;
+text-align:center;
+}
+
+.wrapper{
+width:90%;
+max-width:900px;
+margin:auto;
+margin-top:60px;
+padding:40px;
+background:rgba(0,0,0,0.65);
+border-radius:20px;
+box-shadow:0 0 40px #7b00ff;
+}
+
+.title{
+font-size:42px;
+font-weight:bold;
+text-shadow:0 0 20px #7b00ff,0 0 40px #9a2bff;
+margin-bottom:20px;
+}
+
+.subtitle{
+font-size:24px;
+margin-bottom:20px;
+color:#b57bff;
+}
+
+input{
+width:80%;
+padding:14px;
+margin:10px;
+border-radius:10px;
+border:none;
+font-size:16px;
+}
+
+button{
+padding:14px 25px;
+margin:10px;
+border:none;
+border-radius:12px;
+font-size:16px;
+cursor:pointer;
+background:#7b00ff;
+color:white;
+font-weight:bold;
+}
+
+button:hover{
+background:#9a2bff;
+}
+
+.hidden{
+display:none;
+}
+
+textarea{
+width:90%;
+height:320px;
+border-radius:12px;
+padding:15px;
+font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper" id="home">
+<div class="title">Welcome back 😈🕸️👋🏻</div>
+<div class="subtitle">UNBAN SYSTEM PANEL</div>
+
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password"><br>
+
+<button onclick="login()">Login</button>
+<button onclick="openOwner()">Daftar</button>
+</div>
+
+<div class="wrapper hidden" id="ownerAccess">
+<div class="title">Fitur Owner</div>
+<p>Masukan password untuk mengakses Fitur owner</p>
+
+<input id="ownerPass" type="password"><br>
+
+<button onclick="checkOwner()">Masuk</button>
+<button onclick="backHome()">Kembali</button>
+</div>
+
+<div class="wrapper hidden" id="ownerPanel">
+<div class="title">Owner Panel</div>
+<p>Buat akun login baru</p>
+
+<input id="newUser" placeholder="Username Baru">
+<input id="newPass" placeholder="Password Baru"><br>
+
+<button onclick="createAccount()">Daftarkan Akun</button>
+<button onclick="backHome()">Kembali</button>
+</div>
+
+<div class="wrapper hidden" id="menu">
+<div class="title">MT UNBAN BY NINZ</div>
+<div class="subtitle">Pilih jenis banding</div>
+
+<button onclick="spamPage()">Spam</button>
+<button onclick="permPage()">Permanen</button>
+</div>
+
+<div class="wrapper hidden" id="spam">
+<div class="title">UNBAN LEWAT EMAIL</div>
+<p>Please type your number +62xxxxxx</p>
+
+<input id="spamNumber" placeholder="+62xxxxxx"><br>
+
+<button onclick="generateSpam()">Generate</button>
+<button onclick="backMenu()">Kembali</button>
+</div>
+
+<div class="wrapper hidden" id="perm">
+<div class="title">UNBAN LEWAT EMAIL</div>
+<p>Please type your number +62xxxxxx</p>
+
+<input id="permNumber" placeholder="+62xxxxxx"><br>
+
+<button onclick="generatePerm()">Generate</button>
+<button onclick="backMenu()">Kembali</button>
+</div>
+
+<div class="wrapper hidden" id="result">
+<div class="title">Pesan Banding</div>
+
+<textarea id="resultText"></textarea><br>
+
+<button onclick="copyText()">Copy Text</button>
+<button onclick="sendEmail()">KIRIM BANDING</button>
+<button onclick="backMenu()">Kembali</button>
+</div>
+
+<script>
+
+const OWNER_PASSWORD = "Ninz123";
+
+let emailSubject="";
+let emailBody="";
+
+function login(){
+let u = document.getElementById("user").value;
+let p = document.getElementById("pass").value;
+
+if(u === localStorage.getItem("user") && p === localStorage.getItem("pass")){
+openMenu();
+}else{
+alert("Login gagal");
+}
+}
+
+function openOwner(){
+document.getElementById("home").classList.add("hidden");
+document.getElementById("ownerAccess").classList.remove("hidden");
+}
+
+function checkOwner(){
+let pass = document.getElementById("ownerPass").value;
+
+if(pass === OWNER_PASSWORD){
+document.getElementById("ownerAccess").classList.add("hidden");
+document.getElementById("ownerPanel").classList.remove("hidden");
+}else{
+alert("Password owner salah");
+}
+}
+
+function createAccount(){
+let u = document.getElementById("newUser").value;
+let p = document.getElementById("newPass").value;
+
+localStorage.setItem("user",u);
+localStorage.setItem("pass",p);
+
+alert("Akun berhasil dibuat");
+}
+
+function backHome(){
+document.querySelectorAll(".wrapper").forEach(el=>el.classList.add("hidden"));
+document.getElementById("home").classList.remove("hidden");
+}
+
+function openMenu(){
+document.getElementById("home").classList.add("hidden");
+document.getElementById("menu").classList.remove("hidden");
+}
+
+function spamPage(){
+document.getElementById("menu").classList.add("hidden");
+document.getElementById("spam").classList.remove("hidden");
+}
+
+function permPage(){
+document.getElementById("menu").classList.add("hidden");
+document.getElementById("perm").classList.remove("hidden");
+}
+
+function backMenu(){
+document.querySelectorAll(".wrapper").forEach(el=>el.classList.add("hidden"));
+document.getElementById("menu").classList.remove("hidden");
+}
+
+function generateSpam(){
+let num=document.getElementById("spamNumber").value;
+
+emailSubject="Tolong Tinjau akun WhatsApp saya";
+
+emailBody=`Halo Tim WhatsApp,
+
+Saya ingin meminta bantuan untuk meninjau kembali akun WhatsApp saya yang saat ini tidak bisa digunakan.
+
+Nomor saya: ${num}
+
+Saya merasa akun ini mungkin disalahgunakan oleh orang lain atau terjadi kesalahan pada sistem. Saya tidak melakukan aktivitas yang melanggar aturan.
+
+Mohon bantuan tim WhatsApp untuk memeriksa dan membantu memulihkan akun saya.
+
+Terima kasih banyak.`;
+
+document.getElementById("resultText").value=emailBody;
+
+document.getElementById("spam").classList.add("hidden");
+document.getElementById("result").classList.remove("hidden");
+}
+
+function generatePerm(){
+let num=document.getElementById("permNumber").value;
+
+emailSubject="Request Review for Banned WhatsApp Account";
+
+emailBody=`Dear WhatsApp Support Team,
+
+Hello, I hope you are doing well. I am writing to respectfully request a review of my WhatsApp account that has recently been banned. I believe this may have happened by mistake, and I would truly appreciate your help in checking my account again.
+
+Phone Number: ${num}
+
+I have always tried to use WhatsApp normally to communicate with family, friends, and important contacts. I do not send spam messages and I only use the official WhatsApp application.
+
+If there was any activity that accidentally triggered the system, I sincerely apologize. It was never my intention to violate any rules.
+
+I kindly ask your team to review my account and help restore access if possible.
+
+Thank you very much for your time and understanding.
+
+Best regards,
+Ninz
+
+Phone Number: ${num}`;
+
+document.getElementById("resultText").value=emailBody;
+
+document.getElementById("perm").classList.add("hidden");
+document.getElementById("result").classList.remove("hidden");
+}
+
+function sendEmail(){
+let mailto=`mailto:support@support.whatsapp.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+window.location.href=mailto;
+}
+
+function copyText(){
+let text=document.getElementById("resultText");
+text.select();
+document.execCommand("copy");
+alert("Teks berhasil disalin");
+}
+
+</script>
+
+</body>
+</html>
